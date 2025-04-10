@@ -2,11 +2,8 @@ package br.com.dio.models.contas;
 
 import br.com.dio.models.clientes.Cliente;
 
-public abstract sealed class Conta implements IConta permits ContaCorrente {
-
-    // TODO: Criar um método abstrato de imprimirExtrato
-
-    private static final int AGENCIA_PADRAO=1;
+public abstract sealed class Conta implements IConta permits ContaCorrente, ContaPoupanca {
+    private static final int AGENCIA_PADRAO = 1;
     private static int sequencial = 1;
 
     protected int agencia;
@@ -34,18 +31,49 @@ public abstract sealed class Conta implements IConta permits ContaCorrente {
 
     @Override
     public void sacar(double valorDeSaque) {
+        if (valorDeSaque > 0) {
+            if (saldo >= valorDeSaque) {
+                saldo -= valorDeSaque;
+            } else {
+                // throws ExceptionPersonalizada (Saque inválido: Saldo insuficiente)
+                System.out.println();
+            }
+        } else if (valorDeSaque == 0) {
+            // throws ExceptionPersonalizada (Insira um valor para realizar a operação)
+            System.out.println();
+        } else {
+            // throws ExceptionPersonalizada (Insira um valor positivo)
+            System.out.println();
+        }
+
         saldo -= valorDeSaque;
     }
 
     @Override
     public void depositar(double valorDeDeposito) {
-        saldo += valorDeDeposito;
+        if (valorDeDeposito > 0) {
+            saldo += valorDeDeposito;
+        } else if (valorDeDeposito == 0 ){
+            // throws ExceptionPersonalizada (Insira um valor para realizar a operação)
+            System.out.println();
+        } else {
+            // throws ExceptionPersonalizada (Insira um valor positivo)
+            System.out.println();
+        }
     }
 
     @Override
     public void transferir(double valorDeTransferencia, Conta conta) {
-        this.sacar(valorDeTransferencia);
-        conta.depositar(valorDeTransferencia);
+        if (valorDeTransferencia > 0) {
+            this.sacar(valorDeTransferencia);
+            conta.depositar(valorDeTransferencia);
+        } else if (valorDeTransferencia == 0) {
+            // throws ExceptionPersonalizada (Insira um valor para realizar a operação)
+            System.out.println();
+        } else {
+            // throws ExceptionPersonalizada (Insira um valor positivo)
+            System.out.println();
+        }
     }
 
     public void exibirInfosComuns() {
