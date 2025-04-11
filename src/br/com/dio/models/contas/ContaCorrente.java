@@ -2,6 +2,9 @@ package br.com.dio.models.contas;
 
 import br.com.dio.models.clientes.Cliente;
 import br.com.dio.models.clientes.ClienteComum;
+import br.com.dio.models.contas.exceptions.ExcedeLimiteException;
+import br.com.dio.models.contas.exceptions.ValorNegativoException;
+import br.com.dio.models.contas.exceptions.ValorZeroException;
 
 public final class ContaCorrente extends Conta {
     // TODO: Criar as classes de Exceções Personalizadas
@@ -23,21 +26,30 @@ public final class ContaCorrente extends Conta {
 
     // Métodos básicos da classe
     @Override
-    public void sacar(double valorDeSaque) {
+    public void sacar(double valorDeSaque) throws ExcedeLimiteException, ValorNegativoException, ValorZeroException {
         if (valorDeSaque > 0) {
             if (saldo - valorDeSaque >= -LIMITE) {
                 saldo -= valorDeSaque;
                 System.out.printf("Saque realizado: %.2f%n", valorDeSaque);
             } else {
-                // throws ExceptionPersonalizada (Saque inválido: Excede limite)
-                System.out.println("Valor excede o limite");
+                throw new ExcedeLimiteException();
             }
         } else if (valorDeSaque == 0) {
-            // throws ExceptionPersonalizada (Insira um valor para realizar a operação)
-            System.out.println();
+            throw new ValorZeroException();
         } else {
-            // throws ExceptionPersonalizada (Insira um valor positivo)
-            System.out.println();
+            throw new ValorNegativoException("Para realizar a operação é necessário informar um valor positivo");
+        }
+    }
+
+    @Override
+    public void transferir(double valorDeTransferencia, Conta conta) throws ExcedeLimiteException, ValorNegativoException, ValorZeroException {
+        if (valorDeTransferencia > 0) {
+            this.sacar(valorDeTransferencia);
+            conta.depositar(valorDeTransferencia);
+        } else if (valorDeTransferencia == 0) {
+            throw new ValorZeroException();
+        } else {
+            throw new ValorNegativoException();
         }
     }
 

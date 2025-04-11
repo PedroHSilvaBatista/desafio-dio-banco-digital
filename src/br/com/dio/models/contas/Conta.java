@@ -1,6 +1,10 @@
 package br.com.dio.models.contas;
 
 import br.com.dio.models.clientes.Cliente;
+import br.com.dio.models.contas.exceptions.ExcedeLimiteException;
+import br.com.dio.models.contas.exceptions.SaldoInsuficienteException;
+import br.com.dio.models.contas.exceptions.ValorNegativoException;
+import br.com.dio.models.contas.exceptions.ValorZeroException;
 
 public abstract sealed class Conta implements IConta permits ContaCorrente, ContaPoupanca {
     private static final int AGENCIA_PADRAO = 1;
@@ -30,49 +34,42 @@ public abstract sealed class Conta implements IConta permits ContaCorrente, Cont
     }
 
     @Override
-    public void sacar(double valorDeSaque) {
+    public void sacar(double valorDeSaque) throws SaldoInsuficienteException, ExcedeLimiteException, ValorZeroException, ValorNegativoException {
+
         if (valorDeSaque > 0) {
             if (saldo >= valorDeSaque) {
                 saldo -= valorDeSaque;
             } else {
-                // throws ExceptionPersonalizada (Saque inválido: Saldo insuficiente)
-                System.out.println();
+                throw new SaldoInsuficienteException();
             }
         } else if (valorDeSaque == 0) {
-            // throws ExceptionPersonalizada (Insira um valor para realizar a operação)
-            System.out.println();
+            throw new ValorZeroException();
         } else {
-            // throws ExceptionPersonalizada (Insira um valor positivo)
-            System.out.println();
+            throw new ValorNegativoException();
         }
 
-        saldo -= valorDeSaque;
     }
 
     @Override
-    public void depositar(double valorDeDeposito) {
+    public void depositar(double valorDeDeposito) throws ValorZeroException, ValorNegativoException {
         if (valorDeDeposito > 0) {
             saldo += valorDeDeposito;
-        } else if (valorDeDeposito == 0 ){
-            // throws ExceptionPersonalizada (Insira um valor para realizar a operação)
-            System.out.println();
+        } else if (valorDeDeposito == 0) {
+            throw new ValorZeroException();
         } else {
-            // throws ExceptionPersonalizada (Insira um valor positivo)
-            System.out.println();
+            throw new ValorNegativoException();
         }
     }
 
     @Override
-    public void transferir(double valorDeTransferencia, Conta conta) {
+    public void transferir(double valorDeTransferencia, Conta conta) throws ExcedeLimiteException, SaldoInsuficienteException, ValorZeroException, ValorNegativoException {
         if (valorDeTransferencia > 0) {
             this.sacar(valorDeTransferencia);
             conta.depositar(valorDeTransferencia);
         } else if (valorDeTransferencia == 0) {
-            // throws ExceptionPersonalizada (Insira um valor para realizar a operação)
-            System.out.println();
+            throw new ValorZeroException();
         } else {
-            // throws ExceptionPersonalizada (Insira um valor positivo)
-            System.out.println();
+            throw new ValorNegativoException();
         }
     }
 

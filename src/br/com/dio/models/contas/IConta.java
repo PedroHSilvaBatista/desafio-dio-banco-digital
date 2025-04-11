@@ -1,10 +1,17 @@
 package br.com.dio.models.contas;
 
-public interface IConta {
+import br.com.dio.models.contas.exceptions.ExcedeLimiteException;
+import br.com.dio.models.contas.exceptions.SaldoInsuficienteException;
+import br.com.dio.models.contas.exceptions.ValorNegativoException;
+import br.com.dio.models.contas.exceptions.ValorZeroException;
 
-    void sacar(double valorDeSaque);
+public interface IConta{
 
-    void depositar(double valorDeDeposito);
+    void sacar(double valorDeSaque) throws SaldoInsuficienteException, ExcedeLimiteException,
+            ValorNegativoException, ValorZeroException;
 
-    void transferir(double valorTransferencia, Conta conta);
+    void depositar(double valorDeDeposito) throws ValorNegativoException, ValorZeroException;
+
+    void transferir(double valorTransferencia, Conta conta) throws SaldoInsuficienteException,
+            ExcedeLimiteException, ValorNegativoException, ValorZeroException;
 }
