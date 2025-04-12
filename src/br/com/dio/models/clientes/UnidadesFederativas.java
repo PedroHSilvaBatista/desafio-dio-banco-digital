@@ -42,6 +42,10 @@ enum UnidadesFederativas {
         this.codigoIBGE = codigoIBGE;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     public String getSigla() {
         return sigla;
     }
@@ -49,7 +53,7 @@ enum UnidadesFederativas {
     public static UnidadesFederativas encontrarUFPorSigla(String siglaDeBusca) {
         return Arrays.stream(values()).filter(uf -> uf.getSigla().equalsIgnoreCase(siglaDeBusca))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Sigla invpalida: " + siglaDeBusca));
+                .orElseThrow(() -> new IllegalArgumentException("Sigla inválida: " + siglaDeBusca));
     }
 
     @Override

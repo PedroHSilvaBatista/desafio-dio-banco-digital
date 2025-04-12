@@ -1,6 +1,8 @@
 package br.com.dio.models.contas;
 
 import br.com.dio.models.clientes.Cliente;
+import br.com.dio.models.clientes.ClienteComum;
+import br.com.dio.models.clientes.ClienteVIP;
 import br.com.dio.models.contas.exceptions.ExcedeLimiteException;
 import br.com.dio.models.contas.exceptions.SaldoInsuficienteException;
 import br.com.dio.models.contas.exceptions.ValorNegativoException;
@@ -61,6 +63,26 @@ public abstract sealed class Conta implements IConta permits ContaCorrente, Cont
         }
     }
 
+    public void pagarConta(double valorDaConta) throws SaldoInsuficienteException, ExcedeLimiteException, ValorZeroException, ValorNegativoException {
+        if (valorDaConta > 0) {
+            if (saldo >= valorDaConta) {
+                saldo -= valorDaConta;
+                if (cliente instanceof ClienteComum comum) {
+                    saldo += (valorDaConta * comum.getCashback());
+                } else if (cliente instanceof ClienteVIP vip) {
+                    saldo += (valorDaConta * vip.getCashback());
+                }
+                System.out.println("Transação realizada com sucesso. Saldo atual: " + saldo);
+            } else {
+                throw new SaldoInsuficienteException();
+            }
+        } else if (valorDaConta == 0) {
+            throw new ValorZeroException();
+        } else {
+            throw new ValorNegativoException();
+        }
+    }
+
     @Override
     public void transferir(double valorDeTransferencia, Conta conta) throws ExcedeLimiteException, SaldoInsuficienteException, ValorZeroException, ValorNegativoException {
         if (valorDeTransferencia > 0) {
@@ -74,6 +96,7 @@ public abstract sealed class Conta implements IConta permits ContaCorrente, Cont
     }
 
     public void exibirInfosComuns() {
+        System.out.println("Titular da conta: " + cliente.getNome());
         System.out.println("Agência: " + this.agencia);
         System.out.println("Numero: " + this.numero);
         System.out.printf("Saldo: R$%.2f%n", this.saldo);

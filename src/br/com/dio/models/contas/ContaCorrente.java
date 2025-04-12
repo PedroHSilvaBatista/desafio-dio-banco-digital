@@ -2,13 +2,12 @@ package br.com.dio.models.contas;
 
 import br.com.dio.models.clientes.Cliente;
 import br.com.dio.models.clientes.ClienteComum;
+import br.com.dio.models.clientes.ClienteVIP;
 import br.com.dio.models.contas.exceptions.ExcedeLimiteException;
 import br.com.dio.models.contas.exceptions.ValorNegativoException;
 import br.com.dio.models.contas.exceptions.ValorZeroException;
 
 public final class ContaCorrente extends Conta {
-    // TODO: Comece a modelar a classe Cliente
-
     private final double LIMITE;
 
 
@@ -28,7 +27,6 @@ public final class ContaCorrente extends Conta {
         if (valorDeSaque > 0) {
             if (saldo - valorDeSaque >= -LIMITE) {
                 saldo -= valorDeSaque;
-                System.out.printf("Saque realizado: %.2f%n", valorDeSaque);
             } else {
                 throw new ExcedeLimiteException();
             }
@@ -38,6 +36,27 @@ public final class ContaCorrente extends Conta {
             throw new ValorNegativoException("Para realizar a operação é necessário informar um valor positivo");
         }
     }
+
+    @Override
+    public void pagarConta(double valorDaConta) throws ExcedeLimiteException, ValorNegativoException, ValorZeroException {
+        if (valorDaConta > 0) {
+            if (saldo - valorDaConta >= -LIMITE) {
+                saldo -= valorDaConta;
+                if (cliente instanceof ClienteComum comum) {
+                    saldo += (valorDaConta * comum.getCashback());
+                } else if (cliente instanceof ClienteVIP vip) {
+                    saldo += (valorDaConta * vip.getCashback());
+                }
+            } else {
+                throw new ExcedeLimiteException();
+            }
+        } else if (valorDaConta == 0) {
+            throw new ValorZeroException();
+        } else {
+            throw new ValorNegativoException();
+        }
+    }
+
 
     @Override
     public void transferir(double valorDeTransferencia, Conta conta) throws ExcedeLimiteException, ValorNegativoException, ValorZeroException {
@@ -53,7 +72,10 @@ public final class ContaCorrente extends Conta {
 
     @Override
     public void imprimirExtrato() {
+        System.out.println("==============================================");
+        System.out.println("INFORMAÇÕES DA CONTA CORRENTE");
         super.exibirInfosComuns();
         System.out.printf("Limite da conta: R$%.2f%n", LIMITE);
+        System.out.println("==============================================");
     }
 }

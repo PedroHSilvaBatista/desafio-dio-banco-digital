@@ -6,11 +6,9 @@ import br.com.dio.models.clientes.ClienteComum;
 import java.time.LocalDate;
 
 public final class ContaPoupanca extends Conta {
-    // TODO: Após terminar de modelar a classe ContaPoupanca, comece a modelar a classe Cliente
-
     private final double TR = 0.0017;
     private final double JUROS;
-    private LocalDate dataAtual = LocalDate.now();
+    private final LocalDate dataAtual = LocalDate.now();
 
     public ContaPoupanca(Cliente cliente) {
         super(cliente);
@@ -47,7 +45,10 @@ public final class ContaPoupanca extends Conta {
 
     @Override
     public void imprimirExtrato() {
+        System.out.println("==============================================");
+        System.out.println("INFORMAÇÕES DA CONTA POUPANÇA");
         super.exibirInfosComuns();
-        System.out.printf("Valor do juros da conta: %.2f%%%n", JUROS * 100);
+        System.out.printf("Valor do juros da conta: %.1f%%%n", JUROS * 100);
+        System.out.println("==============================================");
     }
 }

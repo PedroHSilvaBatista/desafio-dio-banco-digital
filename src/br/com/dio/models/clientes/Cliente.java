@@ -1,7 +1,7 @@
 package br.com.dio.models.clientes;
 
 
-public abstract class Cliente {
+public sealed abstract class Cliente permits ClienteComum, ClienteVIP {
     private String nome;
     private int idade;
     private UnidadesFederativas unidadeFederativa;
@@ -28,5 +28,12 @@ public abstract class Cliente {
         System.out.println(unidadeFederativa);
     }
 
-    public abstract void exibirInformacoesCliente();
+    protected void exibirInfosComuns() {
+        System.out.println("Nome do titular: " + nome);
+        System.out.println("Idade: " + idade);
+        System.out.println("Estado pertencente: " + unidadeFederativa.getNome() + "-"
+                + unidadeFederativa.getSigla());
+    }
+
+    protected abstract void exibirInformacoesCliente();
 }
