@@ -13,37 +13,53 @@ public class Main {
     public static void main(String[] args) {
         // TESTES MOCADOS
 
+        // Declarando os clientes Comum e VIP
         ClienteComum clienteComum;
         ClienteVIP clienteVIP;
-        ContaPoupanca cp;
-        ContaCorrente cc;
+
+        // Declarando as contas Poupança e Corrente
+        ContaPoupanca contaPoupanca;
+        ContaCorrente contaCorrente;
 
         try {
+            // Instanciando os cliente Comum e VIP
             clienteComum = new ClienteComum("Márcio", 22, "RS");
-            clienteComum.exibirInformacoesCliente();
-
             clienteVIP = new ClienteVIP("Maria", 32, "AM");
 
+            // Caso as informações estejam corretas a execução do código continuará
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return;
         }
 
-        cp = new ContaPoupanca(clienteComum);
-        cc = new ContaCorrente(clienteVIP);
+        // Instanciando as contas Poupança e Corrente para que elas possam ser inicializadas corretamente
+        contaPoupanca = new ContaPoupanca(clienteComum);
+        contaCorrente = new ContaCorrente(clienteVIP);
+
+        // OBS: A instanciação do objeto da classe Poupança poderia também ser inicializada por um objeto da classe VIP,
+        //      assim como a instanciação da classe Corrente poderia ser inicializada por um objeto da classe Comum
 
         try {
-            cp.depositar(10);
-            cp.sacar(5);
-            cp.imprimirExtrato();
-            cp.transferir(2, cc);
+            // Testando os métodos das classes
 
-            cc.imprimirExtrato();
-            cc.depositar(10);
-            cc.sacar(4);
+            // Testando os métodos da classe Poupança e do cliente Comum
+            contaPoupanca.depositar(1000);
+            contaPoupanca.sacar(200);
+            contaPoupanca.transferir(100, contaCorrente);
+            contaPoupanca.pagarConta(50);
+            contaPoupanca.imprimirExtrato();
+            clienteComum.exibirInformacoesCliente();
+
+            // Testando os métodos da classe Corrente e do cliente VIP
+            contaCorrente.depositar(2000);
+            contaCorrente.sacar(500);
+            contaCorrente.transferir(75, contaPoupanca);
+            contaCorrente.pagarConta(100);
+            contaCorrente.imprimirExtrato();
+            clienteVIP.exibirInformacoesCliente();
+
         } catch (SaldoInsuficienteException | ExcedeLimiteException | ValorZeroException | ValorNegativoException e) {
             System.out.println(e.getMessage());
         }
-
     }
 }

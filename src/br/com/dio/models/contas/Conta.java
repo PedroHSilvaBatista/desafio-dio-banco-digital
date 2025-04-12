@@ -72,7 +72,6 @@ public abstract sealed class Conta implements IConta permits ContaCorrente, Cont
                 } else if (cliente instanceof ClienteVIP vip) {
                     saldo += (valorDaConta * vip.getCashback());
                 }
-                System.out.println("Transação realizada com sucesso. Saldo atual: " + saldo);
             } else {
                 throw new SaldoInsuficienteException();
             }

@@ -20,10 +20,10 @@ public final class ClienteVIP extends Cliente {
     @Override
     public void exibirInformacoesCliente() {
         System.out.println("==============================================");
-        System.out.println("INFORMAÇÕES DO CLIENTE");
+        System.out.println("INFORMAÇÕES DO CLIENTE VIP");
         super.exibirInfosComuns();
         System.out.printf("Cashback: %.1f%%%n", cashback * 100);
-        System.out.println("Serviços disponíveis: "); servicosDisponiveis.forEach(System.out::print);
+        System.out.println("Serviços disponíveis: " + servicosDisponiveis);
         System.out.println("==============================================");
     }
 }
