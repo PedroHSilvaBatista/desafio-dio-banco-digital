@@ -7,9 +7,7 @@ import br.com.dio.models.contas.exceptions.ValorNegativoException;
 import br.com.dio.models.contas.exceptions.ValorZeroException;
 
 public final class ContaCorrente extends Conta {
-    // TODO: Criar as classes de Exceções Personalizadas
-
-    // TODO: Após terminar de modelar a classe ContaCorrente, comece a modelar a classe Cliente
+    // TODO: Comece a modelar a classe Cliente
 
     private final double LIMITE;
 
