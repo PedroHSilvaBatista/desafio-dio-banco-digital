@@ -24,8 +24,8 @@ public sealed abstract class Cliente permits ClienteComum, ClienteVIP {
         return idade;
     }
 
-    public void getUnidadeFederativa() {
-        System.out.println(unidadeFederativa);
+    public String getSiglaUnidadeFederativa() {
+        return unidadeFederativa.getSigla();
     }
 
     protected void exibirInfosComuns() {

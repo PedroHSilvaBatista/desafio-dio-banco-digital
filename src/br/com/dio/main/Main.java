@@ -1,5 +1,6 @@
 package br.com.dio.main;
 
+import br.com.dio.models.banco.Banco;
 import br.com.dio.models.clientes.ClienteComum;
 import br.com.dio.models.clientes.ClienteVIP;
 import br.com.dio.models.contas.ContaCorrente;
@@ -13,6 +14,9 @@ public class Main {
     public static void main(String[] args) {
         // TESTES MOCADOS
 
+        // Instanciando um objeto da classe banco
+        Banco banco = new Banco("Banco X");
+
         // Declarando os clientes Comum e VIP
         ClienteComum clienteComum;
         ClienteVIP clienteVIP;
@@ -23,7 +27,7 @@ public class Main {
 
         try {
             // Instanciando os cliente Comum e VIP
-            clienteComum = new ClienteComum("Márcio", 22, "RS");
+            clienteComum = new ClienteComum("Vitor", 22, "RS");
             clienteVIP = new ClienteVIP("Maria", 32, "AM");
 
             // Caso as informações estejam corretas a execução do código continuará
@@ -57,6 +61,13 @@ public class Main {
             contaCorrente.pagarConta(100);
             contaCorrente.imprimirExtrato();
             clienteVIP.exibirInformacoesCliente();
+
+            // Testando os métodos da classe Banco
+            banco.adicionarConta(contaCorrente);
+            banco.adicionarConta(contaPoupanca);
+
+            banco.exibirContasPorSaldo();
+            banco.exibirContasPorNome();
 
         } catch (SaldoInsuficienteException | ExcedeLimiteException | ValorZeroException | ValorNegativoException e) {
             System.out.println(e.getMessage());

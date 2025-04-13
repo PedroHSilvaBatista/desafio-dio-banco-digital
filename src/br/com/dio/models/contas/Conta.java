@@ -8,7 +8,9 @@ import br.com.dio.models.contas.exceptions.SaldoInsuficienteException;
 import br.com.dio.models.contas.exceptions.ValorNegativoException;
 import br.com.dio.models.contas.exceptions.ValorZeroException;
 
-public abstract sealed class Conta implements IConta permits ContaCorrente, ContaPoupanca {
+import java.lang.Comparable;
+
+public abstract sealed class Conta implements IConta, Comparable<Conta> permits ContaCorrente, ContaPoupanca{
     private static final int AGENCIA_PADRAO = 1;
     private static int sequencial = 1;
 
@@ -102,4 +104,14 @@ public abstract sealed class Conta implements IConta permits ContaCorrente, Cont
     }
 
     protected abstract void imprimirExtrato();
+
+    @Override
+    public int compareTo(Conta conta) {
+        return Double.compare(saldo, conta.saldo);
+    }
+
+    @Override
+    public String toString() {
+        return "Nome: " + cliente.getNome() + ", Saldo: R$ " + saldo + ", Estado: " + cliente.getSiglaUnidadeFederativa();
+    }
 }
